@@ -1,0 +1,41 @@
+#ifndef TREE_HH
+#define TREE_HH
+#include "TCanvas.h"
+#include "TFile.h"
+#include "TLine.h"
+#include "TPolyLine.h"
+#include "TMath.h"
+#include "TVector2.h"
+
+#include <vector>
+
+class Tree{
+private:
+  double deg2rad;
+  double fDisx, fDisy;
+  TCanvas *fCanvas;
+  int fIter;
+  double fWidth;
+  double fLength;
+  TVector2 fOrigin;
+  double fOffsetY;
+  double fTheta;
+
+  TFile *fFile;
+
+  std::vector<TPolyLine*>::iterator fVit;
+  std::vector<TPolyLine*> fTrunks;
+
+  std::vector<TPolyLine*> fStorage, fTemp;
+
+  std::vector<TLine*>::iterator fVitl;
+  std::vector<TLine*> fBranches;
+
+public:
+  Tree();
+  ~Tree(){;}
+
+  void Draw();
+  void GenerateTree();
+};
+#endif

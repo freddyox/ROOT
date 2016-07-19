@@ -1,0 +1,42 @@
+#include "TCanvas.h"
+#include "TLine.h"
+#include "TVector2.h"
+#include "TMath.h"
+#include <cmath>
+#include <vector>
+#include <iostream>
+
+// Algorithm to generate a Koch Snowflake fractal.
+// Written May 6, 2016 - Obrecht
+void split(TLine*){
+
+}
+void koch(){
+  TCanvas *c1 = new TCanvas("c1","Koch Snowflake",0,1000,1000,1000);
+  c1->SetFillColor(1);
+
+  std::vector<TLine*> lines;
+  std::vector<TLine*>::iterator vit;
+
+  double th = 60.0;
+  double deg2rad = TMath::Pi()/180.0;
+
+  double mag = 0.6;
+  double centerx = (1.0-0.6)/2.0;
+  double centery = (1-mag*sqrt(3)/2)/2.0;
+
+  TVector2 x_hat(1,0);
+  TVector2 initial(centerx,centery);
+  TVector2 final = initial + mag*x_hat;
+
+  TLine *bot = new TLine(initial.X(),initial.Y(),final.X(),final.Y());
+  leg1->SetLineColor(kMagenta-3);
+
+
+  // Draw everything
+  for( vit=lines.begin(); vit != lines.end(); vit++ ) {
+    (*vit)->Draw("gl");
+  }
+}
+
+

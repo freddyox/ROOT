@@ -1,0 +1,116 @@
+#include "TH3D.h"
+#include "TH2D.h"
+#include "TH1D.h"
+#include "TPolyLine3D.h"
+#include "TRandom.h"
+#include "TFile.h"
+#include "TVector3.h"
+#include "TCanvas.h"
+#include <cmath>
+#include "TPad.h"
+#include "TString.h"
+
+void RW_Simulation(void){
+  TCanvas *c1 = new TCanvas("c1","c1",1200,1200);
+  c1->SetGrid(1,1);
+  c1->SetFillColor(kBlack);
+
+  Double_t dX = 1.0;
+  Int_t N = 100000;
+  Int_t Nsimulations = 4;
+  //RW(dX,N,Nsimulations);
+  GaussianRW(25.0, 5.0, N, Nsimulations);
+
+}
+
+void RW(Double_t dX, Int_t N, Int_t Nsimulations){
+  TRandom *random = new TRandom();
+  
+  for(Int_t sims=0; sims<Nsimulations; sims++ ) {
+    TPolyLine3D *l = new TPolyLine3D(N);
+    random->SetSeed(3*sims+2);
+
+    TVector3 pos  (0.0, 0.0, 0.0);
+    TVector3 step (0.0, 0.0, 0.0);
+
+    for(Int_t i=0; i<N; i++ ) {
+      Int_t direction = 1+random->Integer(6);
+      switch(direction) {
+      case 1 : step.SetX( dX );
+	break;
+      case 2 : step.SetX( -dX );
+	break;
+      case 3 : step.SetY( dX );
+	break;
+      case 4 : step.SetY( -dX );
+	break;
+      case 5 : step.SetZ( dX );
+	break;
+      case 6 : step.SetZ( -dX );
+	break;
+      default :
+	break;
+      }  
+      pos += step;
+      l->SetPoint( i+1, pos.X(), pos.Y(), pos.Z() );
+
+    }
+    if( sims==0 ) {
+      l->SetLineColor(2);
+      l->Draw();
+    } else {
+      l->SetLineColor(2+sims);
+      //c1->Modify();
+      //c1->Update();
+      l->Draw("same");
+    }
+  }
+}
+
+void GaussianRW(Double_t mean, Double_t sigma, Int_t N, Int_t Nsimulations) {
+  // This drunkard has a gaussian step size distribution
+  TRandom *random = new TRandom();
+
+  for(Int_t sims=0; sims<Nsimulations; sims++ ) {
+    TPolyLine3D *l = new TPolyLine3D(N);
+    random->SetSeed(5*sims+2);
+
+    TVector3 pos  (0.0, 0.0, 0.0);
+    TVector3 step (0.0, 0.0, 0.0);
+    Double_t dX = 0.0;
+    
+    for(Int_t i=0; i<N; i++ ) {
+      Int_t direction = 1+random->Integer(6);
+      dX = random->Gaus(mean,sigma);
+
+      switch(direction) {
+      case 1 : step.SetX( dX );
+	break;
+      case 2 : step.SetX( -dX );
+	break;
+      case 3 : step.SetY( dX );
+	break;
+      case 4 : step.SetY( -dX );
+	break;
+      case 5 : step.SetZ( dX );
+	break;
+      case 6 : step.SetZ( -dX );
+	break;
+      default :
+	break;
+      }  
+      pos += step;
+      l->SetPoint( i+1, pos.X(), pos.Y(), pos.Z() );
+
+    }
+    if( sims==0 ) {
+      l->SetLineColor(2);
+      l->Draw();
+    } else {
+      l->SetLineColor(2+sims);
+      //c1->Modify();
+      //c1->Update();
+      l->Draw("same");
+    }
+  }
+}
