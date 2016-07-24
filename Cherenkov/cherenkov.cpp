@@ -28,7 +28,8 @@ void cherenkov(){
   TFile *myfile = new TFile("spectrum_cherenkov.root","RECREATE");
 
   TString names[] = {"Kaon","Pion","Proton","Electron"};
-  TString nmaterials[] = {"Aerogel","Gas"};
+  TString nmaterials[] = {"Aerogel","C4F10", "CF4"};
+
   TString mat_root[] = {"Aerogel", "C_{4}F_{10}","CF_{4}"};
   TString particles[] = {"K","#pi","p","e^{-}"};
 
@@ -38,13 +39,13 @@ void cherenkov(){
   double mass_e = 0.511 / 1000.0;      // GeV
 
   double n_aero = 1.0304;              // index of ref. for aerogel 
-  double n_gas = 1.00137;              // index of ref. for C4F10
-  double n_gas1 = 1.0005;              // index of ref for CF4
+  double n_C4F10 = 1.00137;              // index of ref. for C4F10
+  double CF4 = 1.0005;              // index of ref for CF4
 
   ///////////////////////////////////////////////////////////////////
   //           Only need to add physical constants here
   double masses[] = {mass_kaon, mass_pion, mass_proton, mass_e};
-  double index_of_ref[] = {n_aero, n_gas, n_gas1};                 
+  double index_of_ref[] = {n_aero, n_C4F10, CF4};                 
   ///////////////////////////////////////////////////////////////////
   
   int m_size = sizeof(masses)/sizeof(*masses);
